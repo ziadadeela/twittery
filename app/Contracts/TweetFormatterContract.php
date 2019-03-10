@@ -12,4 +12,8 @@ namespace App\Contracts;
 interface TweetFormatterContract
 {
 
+    public function format();
+
+    public function getHashTags();
+
 }

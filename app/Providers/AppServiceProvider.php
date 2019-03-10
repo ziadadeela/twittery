@@ -3,9 +3,9 @@
 namespace App\Providers;
 
 use App\Classes\TweetFormatter;
-use App\Classes\Twitter;
+use App\Classes\TwitterHandler;
 use App\Contracts\TweetFormatterContract;
-use App\Contracts\TwitterContract;
+use App\Contracts\TwitterHandlerContract;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 
@@ -18,7 +18,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind(TwitterContract::class, Twitter::class);
+        $this->app->bind(TwitterHandlerContract::class, TwitterHandler::class);
         $this->app->bind(TweetFormatterContract::class, TweetFormatter::class);
     }
 

@@ -22,4 +22,9 @@ class Tweet extends Model
         'hashtags' => 'array'
     ];
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
 }
