@@ -26,7 +26,7 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
-//        $schedule->job(new SyncUsersTweets())->everyMinute();
+        $schedule->job(new SyncUsersTweets())->everyMinute();
 
     }
 

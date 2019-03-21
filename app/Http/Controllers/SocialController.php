@@ -34,6 +34,7 @@ class SocialController extends Controller
                 'provider_id' => $getInfo->id
             ]);
         }
+        //TODO: fix user auth passport/apiToken
         return $user;
     }
 }
