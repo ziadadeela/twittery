@@ -15,16 +15,18 @@ class Tweet extends Model
             'retweet_count',
             'favorite_count',
             'twitter_created_at',
-            'hashtags'
         ];
 
-    protected $casts = [
-        'hashtags' => 'array'
-    ];
+    protected $casts = [];
 
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function hashtags()
+    {
+        return $this->belongsToMany(Hashtag::class);
     }
 
 }

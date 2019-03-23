@@ -17,7 +17,6 @@ class CreateTweetsTable extends Migration
             $table->increments('id');
             $table->string('twitter_id');
             $table->unsignedInteger('user_id');
-            $table->json('hashtags');
             $table->text('text')->nullable();
             $table->integer('retweet_count')->default(0);
             $table->integer('favorite_count')->default(0);

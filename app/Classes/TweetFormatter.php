@@ -41,7 +41,7 @@ class TweetFormatter
             'retweet_count' => $tweet['retweet_count'],
             'favorite_count' => $tweet['favorite_count'],
             'twitter_created_at' => $this->formatDate($tweet['created_at']),
-            'hashtags' => $this->getHashTags()
+//            'hashtags' => $this->getHashTags()
         ];
     }
 

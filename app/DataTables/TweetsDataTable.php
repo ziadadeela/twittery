@@ -1,6 +1,9 @@
 <?php
+
 namespace App\DataTables;
+
 use App\Tweet;
+use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Services\DataTable;
 
@@ -22,7 +25,7 @@ class TweetsDataTable extends DataTable
      */
     public function query()
     {
-        $query = Tweet::query();
+        $query = Tweet::query()->where('user_id', Auth::id());
 
         return $this->applyScopes($query);
     }

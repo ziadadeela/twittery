@@ -4,6 +4,7 @@ namespace App\Classes;
 
 
 use App\Contracts\TweetFormatterContract;
+use App\Hashtag;
 use App\User;
 use Thujohn\Twitter\Facades\Twitter;
 
@@ -43,13 +44,21 @@ class TwitterHandler
 
     private function syncUserTweets(User $user, array $userTweets)
     {
-        $formattedTweets = [];
         foreach ($userTweets as $userTweet) {
             $formatter = app(TweetFormatterContract::class, ['tweet' => $userTweet]);
-            $formattedTweets[] = $formatter->format();
+            $tweet = $user->tweets()->create($formatter->format());
+            $this->syncTweetHashTags($tweet, $formatter->getHashTags());
         }
-        $user->tweets()->createMany($formattedTweets);
     }
 
+    private function syncTweetHashTags($tweet, array $hashtags)
+    {
+        $tweetHashtagsIds = [];
+        foreach ($hashtags as $hashtag) {
+            $newHT = Hashtag::firstOrCreate(['text' => $hashtag]);
+            $tweetHashtagsIds[] = $newHT->id;
+        }
+        $tweet->hashtags()->sync($tweetHashtagsIds);
+    }
 
 }
