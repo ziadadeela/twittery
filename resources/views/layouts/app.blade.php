@@ -3,6 +3,13 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    {{--TODO: fix user auth passport/apiToken--}}
+    {{--@if(auth()->check())--}}
+        {{--<meta name="api-token" content="{{ auth()->user()->api_token }}">--}}
+    {{--@endif--}}
+
     <title>@yield('title') |{{ config('app.name', 'Twittery') }}</title>
     <meta name="description" content="Laravel application for twitter">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">

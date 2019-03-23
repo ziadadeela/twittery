@@ -6,6 +6,7 @@ use App\Classes\TweetFormatter;
 use App\Classes\TwitterHandler;
 use App\Contracts\TweetFormatterContract;
 use App\Contracts\TwitterHandlerContract;
+use Illuminate\Http\Resources\Json\Resource;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 
@@ -30,5 +31,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Schema::defaultStringLength(191);
+        Resource::withoutWrapping();
+
     }
 }
