@@ -18,7 +18,7 @@
                     <div class="card card-small mb-4 pt-3">
                         <div class="card-header border-bottom text-center">
                             <div class="mb-3 mx-auto ">
-                                <avatar :username="this.user.name"
+                                <avatar :username="user.name"
                                         :size="100">
                                 </avatar>
                             </div>
@@ -67,11 +67,13 @@
                                                 <div class="form-group col-md-6">
                                                     <label for="feEmailAddress">Email</label>
                                                     <input type="email" class="form-control" id="feEmailAddress"
-                                                           placeholder="Email" value="sierra@example.com"></div>
-                                                <div class="form-group col-md-6">
-                                                    <label for="fePassword">Password</label>
-                                                    <input type="password" class="form-control" id="fePassword"
-                                                           placeholder="Password"></div>
+                                                           placeholder="Email" :value="user.email"></div>
+                                                <!--TODO: reset password-->
+                                                <!--<div class="form-group col-md-6">-->
+                                                    <!--<label for="fePassword">Password</label>-->
+                                                    <!--<input type="password" class="form-control" id="fePassword"-->
+                                                           <!--placeholder="Password">-->
+                                                <!--</div>-->
                                             </div>
                                             <button type="submit" class="btn btn-accent">Update Account</button>
                                         </form>

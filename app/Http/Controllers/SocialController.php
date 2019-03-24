@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Laravel\Socialite\Facades\Socialite;
 use App\User;
+
 class SocialController extends Controller
 {
     public function redirect($provider)
@@ -15,26 +16,31 @@ class SocialController extends Controller
     {
         $getInfo = Socialite::driver($provider)->user();
 
-        $user = $this->createUser($getInfo,$provider);
+        $user = $this->createUser($getInfo, $provider);
 
         auth()->login($user);
 
         return redirect()->to('/home');
 
     }
-    function createUser($getInfo,$provider){
+
+    function createUser($getInfo, $provider)
+    {
 
         $user = User::where('provider_id', $getInfo->id)->first();
 
         if (!$user) {
             $user = User::create([
-                'name'     => $getInfo->name,
-                'email'    => $getInfo->email,
+                'name' => $getInfo->name,
+                'email' => $getInfo->email,
                 'provider' => $provider,
                 'provider_id' => $getInfo->id
             ]);
         }
         //TODO: fix user auth passport/apiToken
+        $token = $user->createToken('Laravel Password Grant Client')->accessToken;
+        session(['api_token' => $token]);
+
         return $user;
     }
 }

@@ -5,10 +5,9 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    {{--TODO: fix user auth passport/apiToken--}}
-    {{--@if(auth()->check())--}}
-        {{--<meta name="api-token" content="{{ auth()->user()->api_token }}">--}}
-    {{--@endif--}}
+    @if(auth()->check())
+        <meta name="api-token" content="{{ session('api_token') }}">
+    @endif
 
     <title>@yield('title') |{{ config('app.name', 'Twittery') }}</title>
     <meta name="description" content="Laravel application for twitter">
@@ -93,15 +92,15 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="{{route('user.show',['user'=>\Auth::user()])}}">
+                        <a class="nav-link active" href="{{route('user.index')}}">
                             <i class="material-icons">person</i>
                             <span>User Profile</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{route('tweet.show',['user'=>\Auth::user()])}}">
-                            <i class="material-icons">person</i>
-                            <span>User Profile</span>
+                        <a class="nav-link" href="{{route('tweet.index')}}">
+                            <i class="material-icons"><img src="https://img.icons8.com/color/24/000000/twitter.png"></i>
+                            <span>Tweets</span>
                         </a>
                     </li>
 

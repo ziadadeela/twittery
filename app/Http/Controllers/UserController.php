@@ -14,7 +14,9 @@ class UserController extends Controller
      */
     public function index()
     {
+        $user = auth()->user();
 
+        return view('user_profile', compact('user'));
     }
 
     /**
@@ -44,10 +46,9 @@ class UserController extends Controller
      * @param  \App\User $user
      * @return \Illuminate\Http\Response
      */
-    public function show(User $user)
+    public function show()
     {
-
-        return view('user_profile', compact('user'));
+        //
     }
 
     /**
