@@ -14,11 +14,9 @@
 use App\User;
 use Thujohn\Twitter\Facades\Twitter;
 
-Route::get('/','HomeController@welcome')->name('welcome');
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/auth/redirect/{provider}', 'SocialController@redirect');
 Route::get('/callback/{provider}', 'SocialController@callback');
@@ -61,5 +59,16 @@ Route::get('/callback/{provider}', 'SocialController@callback');
 ////    dd($response = Twitter::getUserTimeline(['user_id' => '996399570627244033']));
 //});
 
-Route::resource('user', 'UserController');
-Route::resource('tweet', 'TweetController');
+
+Route::group([
+    'middleware' => [
+        'web',
+        'auth'
+    ]
+
+], function () {
+    Route::resource('user', 'UserController');
+    Route::resource('tweet', 'TweetController');
+    Route::get('/', 'HomeController@welcome')->name('welcome');
+    Route::get('/home', 'HomeController@index')->name('home');
+});

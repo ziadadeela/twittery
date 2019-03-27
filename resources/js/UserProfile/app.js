@@ -1,3 +1,4 @@
+import Toasted from 'vue-toasted';
 
 /**
  * First we will load all of this project's JavaScript dependencies which
@@ -21,6 +22,14 @@ window.Vue = require('vue');
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
 
 Vue.component('user-profile', require('./components/UserProfile.vue').default);
+Vue.component('form-error', require('../components/FormError.vue').default);
+
+
+Vue.use(Toasted, {
+    position: 'bottom-right',
+    duration: 3000,
+    theme: 'bubble',
+});
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

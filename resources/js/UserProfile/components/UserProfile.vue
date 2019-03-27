@@ -56,27 +56,40 @@
                             <li class="list-group-item p-3">
                                 <div class="row">
                                     <div class="col">
-                                        <form>
-                                            <div class="form-row">
-                                                <div class="form-group col-md-12">
-                                                    <label for="feFirstName">Name</label>
-                                                    <input type="text" class="form-control" id="feFirstName"
-                                                           placeholder="First Name" value="Sierra"></div>
-                                            </div>
-                                            <div class="form-row">
-                                                <div class="form-group col-md-6">
+                                        <div class="form-row">
+                                            <div class="form-group col-md-8">
+                                                <label for="feFirstName">Name</label>
+                                                <input type="text" class="form-control" id="feFirstName"
+                                                       placeholder="First Name" v-model="user.name"></div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-md-8">
+                                                <form-error :errors="formErrors.email">
                                                     <label for="feEmailAddress">Email</label>
                                                     <input type="email" class="form-control" id="feEmailAddress"
-                                                           placeholder="Email" :value="user.email"></div>
-                                                <!--TODO: reset password-->
-                                                <!--<div class="form-group col-md-6">-->
-                                                    <!--<label for="fePassword">Password</label>-->
-                                                    <!--<input type="password" class="form-control" id="fePassword"-->
-                                                           <!--placeholder="Password">-->
-                                                <!--</div>-->
+                                                           placeholder="Email" v-model="user.email">
+                                                </form-error>
+
                                             </div>
-                                            <button type="submit" class="btn btn-accent">Update Account</button>
-                                        </form>
+                                            <div class="form-group col-md-8">
+                                                <form-error :errors="formErrors.password">
+                                                    <label for="fePassword">Password</label>
+                                                    <input type="password" class="form-control" id="fePassword"
+                                                           placeholder="Password" v-model="user.password">
+                                                </form-error>
+
+                                            </div>
+                                            <div class="form-group col-md-8">
+                                                <form-error :errors="formErrors.password_confirmation">
+                                                    <label for="feConfirmPassword">Confirm Password</label>
+                                                    <input type="password" class="form-control" id="feConfirmPassword"
+                                                           placeholder="Confirm Password"
+                                                           v-model="user.password_confirmation">
+                                                </form-error>
+                                            </div>
+
+                                        </div>
+                                        <button class="btn btn-accent" @click="updateUser">Update Account</button>
                                     </div>
                                 </div>
                             </li>
@@ -91,13 +104,17 @@
 
 <script>
     import Avatar from 'vue-avatar'
-    import {getAuth as getAuthUser} from '../API/userAPI'
+    import {getAuth as getAuthUser, update as updateUser} from '../API/userAPI'
     // Import component
     import Loading from 'vue-loading-overlay';
     // Import stylesheet
     import 'vue-loading-overlay/dist/vue-loading.css';
 
+    import FormError from '../../components/FormError.vue';
+    import FormErrorMixin from '../../mixins/FormErrorMixin';
+
     export default {
+        mixins: [FormErrorMixin],
         data() {
             return {
                 user: null,
@@ -117,11 +134,50 @@
                 console.log(' error !', error);
             });
 
-        }
-        ,
+        },
+        computed: {
+            formData() {
+                const fd = new FormData;
+
+                fd.append('name', this.user.name)
+                fd.append('email', this.user.email)
+
+                if (this.user.password) {
+                    fd.append('password', this.user.password)
+                }
+
+                if (this.user.password_confirmation) {
+                    fd.append('password_confirmation', this.user.password_confirmation)
+                }
+
+                // if (this.uploadedImage) {
+                //     fd.append('profile_picture', this.uploadedImage)
+                // }
+                return fd
+            }
+        },
+        methods: {
+            updateUser() {
+                updateUser(this.user.id, this.formData).then(resp => {
+                    this.$toasted.show(resp.data.message, {
+                        icon: 'checkbox-marked-circle'
+                    });
+                })
+                    .catch(error => {
+                        if (error.response.status === 422) {
+                            this.$toasted.error(error.response.data.message);
+
+                            this.formErrors = error.response.data.errors
+                        } else {
+                            this.$toasted.error("Something went wrong, cannot create user Data.");
+                        }
+                    });
+            }
+        },
         components: {
             Avatar,
-            Loading
+            Loading,
+            FormError
         }
     }
 </script>

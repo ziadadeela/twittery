@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Actions\User\UpdateUserAction;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UserRequest;
 use App\Http\Resources\UserResource;
 use App\User;
 use Illuminate\Http\Request;
@@ -14,10 +16,10 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @param UserRequest $request
+     * @return void
      */
-    public function store(Request $request)
+    public function store(UserRequest $request)
     {
         //
     }
@@ -27,7 +29,7 @@ class UserController extends Controller
      *
      * @return UserResource
      */
-    public function user()
+    public function authUser()
     {
         $user = auth()->user();
         $user = User::first();
@@ -38,13 +40,18 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param UserRequest $request
      * @param  \App\User $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(UserRequest $request, User $user)
     {
-        //
+        $user = app(UpdateUserAction::class)->update($user, $request->all());
+
+        return response()->json([
+            'message' => 'User Updated Successfully',
+            'user' => new UserResource($user)
+        ], 200);
     }
 
     /**

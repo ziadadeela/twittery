@@ -9,7 +9,7 @@
         <meta name="api-token" content="{{ session('api_token') }}">
     @endif
 
-    <title>@yield('title') |{{ config('app.name', 'Twittery') }}</title>
+    <title>@yield('title', config('app.name', 'Twittery'))</title>
     <meta name="description" content="Laravel application for twitter">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
@@ -86,7 +86,7 @@
             <div class="nav-wrapper">
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link " href="index.html">
+                        <a class="nav-link " href="{{route('home')}}">
                             <i class="material-icons">edit</i>
                             <span>Dashboard</span>
                         </a>

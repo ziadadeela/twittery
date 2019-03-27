@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\User\UpdateUserAction;
+use App\Http\Resources\UserResource;
 use App\User;
 use Illuminate\Http\Request;
 
@@ -71,7 +73,12 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
+        $user = app(UpdateUserAction::class)->update($user, $request->all());
+
+        return response()->json([
+            'message' => 'User Updated Successfully',
+            'user' => new UserResource($user)
+        ], 200);
     }
 
     /**
