@@ -19,8 +19,8 @@ class UserRequest extends BaseRequest
         if ($this->isUpdate() || $this->isStore()) {
             $rules = array_merge($rules, [
                 'name' => 'required|string',
-                'email' => 'required|email',
-                'password' => 'required|confirmed|min:6',
+                'email' => 'email',
+                'password' => 'confirmed|min:6',
 
             ]);
         }
