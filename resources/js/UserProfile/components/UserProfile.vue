@@ -17,10 +17,20 @@
                 <div class="col-lg-4">
                     <div class="card card-small mb-4 pt-3">
                         <div class="card-header border-bottom text-center">
-                            <div class="mb-3 mx-auto ">
-                                <avatar :username="user.name"
-                                        :size="100">
-                                </avatar>
+                            <div class="mb-3 mx-auto">
+                                <div class="file-luncher" @click="launchFilePicker()">
+                                    <avatar :username="user.name"
+                                            :size="100"
+                                            :src="profilePicture"
+
+                                    >
+                                    </avatar>
+                                </div>
+                                <input type="file"
+                                       ref="file"
+                                       name="profile-picture"
+                                       @change="onFileChange($event.target.files)"
+                                       style="display:none">
                             </div>
                             <h4 class="mb-0">{{this.user.name}}</h4>
                             <span class="text-muted d-block mb-2">Project Manager</span>
@@ -119,14 +129,14 @@
             return {
                 user: null,
                 isLoading: false,
-                fullPage: true
+                fullPage: true,
+                profilePicture: null
             }
         },
         created() {
             this.isLoading = true;
 
             getAuthUser().then(result => {
-                //TODO: remove .data
                 this.user = result.data;
                 this.isLoading = false
 
@@ -150,9 +160,9 @@
                     fd.append('password_confirmation', this.user.password_confirmation)
                 }
 
-                // if (this.uploadedImage) {
-                //     fd.append('profile_picture', this.uploadedImage)
-                // }
+                if (this.profilePicture) {
+                    fd.append('profile_picture', this.profilePicture)
+                }
                 return fd
             }
         },
@@ -169,10 +179,21 @@
 
                             this.formErrors = error.response.data.errors
                         } else {
-                            this.$toasted.error("Something went wrong, cannot create user Data.");
+                            this.$toasted.error("Something went wrong, cannot create user.");
                         }
                     });
+            },
+            launchFilePicker() {
+                this.$refs.file.click();
+            },
+            onFileChange(file) {
+                let imageFile = file[0];
+                if (file.length > 0) {
+                    this.profilePicture = URL.createObjectURL(imageFile);
+                }
             }
+
+
         },
         components: {
             Avatar,
@@ -181,3 +202,45 @@
         }
     }
 </script>
+
+<style>
+
+    .file-luncher {
+        position: relative;
+        display: inline-block;
+        width: 100px;
+        height: 100px;
+        /*background-color: #fff;*/
+        /*border-radius: 5px;*/
+        /*box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);*/
+        /*border-radius: 5px;*/
+        /*-webkit-transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);*/
+        /*transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);*/
+    }
+
+    /*.file-luncher::after {*/
+        /*content: "";*/
+        /*border-radius: 5px;*/
+        /*position: absolute;*/
+        /*z-index: -1;*/
+        /*top: 0;*/
+        /*left: 0;*/
+        /*width: 100%;*/
+        /*height: 100%;*/
+        /*box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);*/
+        /*opacity: 0;*/
+        /*-webkit-transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);*/
+        /*transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);*/
+    /*}*/
+
+    .file-luncher:hover {
+        /*-webkit-transform: scale(1.25, 1.25);*/
+        /*transform: scale(1.25, 1.25);*/
+        cursor: pointer;
+
+    }
+
+    /*.file-luncher:hover::after {*/
+        /*opacity: 1;*/
+    /*}*/
+</style>
