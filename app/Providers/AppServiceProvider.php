@@ -9,6 +9,7 @@ use App\Contracts\TwitterHandlerContract;
 use Illuminate\Http\Resources\Json\Resource;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
+use Spatie\Menu\Laravel\Facades\Menu;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -32,6 +33,27 @@ class AppServiceProvider extends ServiceProvider
     {
         Schema::defaultStringLength(191);
         Resource::withoutWrapping();
+        $this->registerMacros();
 
+    }
+
+
+    private function registerMacros()
+    {
+        $items = [
+            'home' => '<i class="fas fa-chart-pie"></i><span>Dashboard</span>',
+            'tweet.index' => '<i class="fab fa-twitter"></i><span>Tweets</span>',
+            'user.index' => '<i class="fas fa-user"></i><span>User Profile</span>'
+        ];
+
+        Menu::macro('sideBar', function () use ($items) {
+            return Menu::build($items, function ($menu, $label, $route) {
+                $menu->route($route, $label);
+            })
+                ->addClass('nav flex-column')
+                ->addItemParentClass('nav-item')
+                ->addItemClass('nav-link')
+                ->setActiveFromRequest();
+        });
     }
 }

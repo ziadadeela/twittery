@@ -84,27 +84,7 @@
                 </div>
             </form>
             <div class="nav-wrapper">
-                <ul class="nav flex-column">
-                    <li class="nav-item">
-                        <a class="nav-link " href="{{route('home')}}">
-                            <i class="material-icons">edit</i>
-                            <span>Dashboard</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="{{route('user.index')}}">
-                            <i class="material-icons">person</i>
-                            <span>User Profile</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{route('tweet.index')}}">
-                            <i class="material-icons"><img src="https://img.icons8.com/color/24/000000/twitter.png"></i>
-                            <span>Tweets</span>
-                        </a>
-                    </li>
-
-                </ul>
+                {!! Menu::sideBar() !!}
             </div>
         </aside>
         <!-- End Main Sidebar -->
