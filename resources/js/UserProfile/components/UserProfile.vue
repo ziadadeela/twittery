@@ -33,26 +33,23 @@
                                        style="display:none">
                             </div>
                             <h4 class="mb-0">{{this.user.name}}</h4>
-                            <span class="text-muted d-block mb-2">Project Manager</span>
-                            <button type="button" class="mb-2 btn btn-sm btn-pill btn-outline-primary mr-2">
-                                <i class="material-icons mr-1">person_add</i>Follow
-                            </button>
+                            <span class="text-muted d-block mb-2">Creation: {{this.user.creation_date}}</span>
                         </div>
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item px-4">
                                 <div class="progress-wrapper">
-                                    <strong class="text-muted d-block mb-2">Workload</strong>
-                                    <div class="progress progress-sm">
-                                        <div class="progress-bar bg-primary" role="progressbar" aria-valuenow="74"
-                                             aria-valuemin="0" aria-valuemax="100" style="width: 74%;">
-                                            <span class="progress-value">74%</span>
-                                        </div>
+                                    <strong class="text-muted d-block mb-2">Counts</strong>
+                                    <div class="">
+                                        <span class="badge badge-primary">Friends: {{this.user.friends_count}}</span>
+                                        <span class="badge badge-primary">Tweets: {{this.user.statuses_count}}</span>
+                                        <span class="badge badge-primary">Favourites: {{this.user.favourites_count}}</span>
+
                                     </div>
                                 </div>
                             </li>
                             <li class="list-group-item p-4">
                                 <strong class="text-muted d-block mb-2">Description</strong>
-                                <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio eaque, quidem, commodi soluta qui quae minima obcaecati quod dolorum sint alias, possimus illum assumenda eligendi cumque?</span>
+                                <span>{{this.user.description}}</span>
                             </li>
                         </ul>
                     </div>
@@ -66,11 +63,15 @@
                             <li class="list-group-item p-3">
                                 <div class="row">
                                     <div class="col">
-                                        <div class="form-row">
+                                          <div class="form-row">
                                             <div class="form-group col-md-8">
+                                                <form-error :errors="formErrors.name">
                                                 <label for="feFirstName">Name</label>
                                                 <input type="text" class="form-control" id="feFirstName"
-                                                       placeholder="First Name" v-model="user.name"></div>
+                                                       placeholder="First Name" v-model="user.name">
+                                                </form-error>
+                                            </div>
+
                                         </div>
                                         <div class="form-row">
                                             <div class="form-group col-md-8">
@@ -119,8 +120,10 @@
     import Loading from 'vue-loading-overlay';
     // Import stylesheet
     import 'vue-loading-overlay/dist/vue-loading.css';
-
-    import FormError from '../../components/FormError.vue';
+    // Import component
+    import FormError from 'vue-form-error';
+    // Import stylesheet
+    import "vue-form-error/dist/FormError.css";
     import FormErrorMixin from '../../mixins/FormErrorMixin';
 
     export default {
@@ -179,7 +182,7 @@
 
                             this.formErrors = error.response.data.errors
                         } else {
-                            this.$toasted.error("Something went wrong, cannot create user.");
+                            this.$toasted.error("Something went wrong, cannot update user.");
                         }
                     });
             },

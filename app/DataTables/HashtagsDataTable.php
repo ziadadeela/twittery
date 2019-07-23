@@ -2,13 +2,15 @@
 
 namespace App\DataTables;
 
+use App\Hashtag;
+use App\Http\Resources\HashtagResource;
 use App\Http\Resources\TweetResource;
 use App\Tweet;
 use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Services\DataTable;
 
-class TweetsDataTable extends DataTable
+class HashtagsDataTable extends DataTable
 {
     /**
      * Build DataTable class.
@@ -17,7 +19,7 @@ class TweetsDataTable extends DataTable
     public function dataTable($query)
     {
         return (new EloquentDataTable($query))->setTransformer(function ($item) {
-            return TweetResource::make($item)->resolve();
+            return HashtagResource::make($item)->resolve();
         });
     }
 
@@ -28,7 +30,9 @@ class TweetsDataTable extends DataTable
      */
     public function query()
     {
-        $query = Tweet::query()->where('user_id', Auth::id())->with('hashtags');
+        $query = Hashtag::query()->whereHas('tweets', function ($q) {
+            return $q->where('user_id', Auth::id());
+        });
 
         return $this->applyScopes($query);
     }
@@ -54,13 +58,7 @@ class TweetsDataTable extends DataTable
     protected function getColumns()
     {
         return [
-            'id',
             'text',
-            'user_id',
-            'hashtags',
-            'retweet_count',
-            'favorite_count',
-            'twitter_created_at',
         ];
     }
 

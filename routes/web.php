@@ -69,6 +69,10 @@ Route::group([
 ], function () {
     Route::resource('user', 'UserController');
     Route::resource('tweet', 'TweetController');
+    Route::resource('hashtag', 'HashtagController');
     Route::get('/', 'HomeController@welcome')->name('welcome');
     Route::get('/home', 'HomeController@index')->name('home');
+    Route::get('hashtag/{hashtag}/tweets', 'HashtagController@getHashtagTweets')->name('hashtag.tweets');
+
+
 });

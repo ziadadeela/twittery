@@ -14,6 +14,7 @@ class UpdateUserAction
         if (isset($data['password']) and $data['password']) {
             $data['password'] = bcrypt($data['password']);
         }
+        dd($data);
 
         $user->update($data);
 

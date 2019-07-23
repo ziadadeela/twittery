@@ -33,12 +33,12 @@
             <label class="custom-control-label" for="customCheck1">Remember password</label>
         </div>
         <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">LogIn</button>
-        <div class="text-md-center">
-            <p>
-            <h6>New on Twittery? Register <a href="{{route('register')}}">here</a>
-            </h6>
-            </p>
-        </div>
+{{--        <div class="text-md-center">--}}
+{{--            <p>--}}
+{{--            <h6>New on Twittery? Register <a href="{{route('register')}}">here</a>--}}
+{{--            </h6>--}}
+{{--            </p>--}}
+{{--        </div>--}}
         <div class="auth-separator">
             <h6>
                 <span>or</span>

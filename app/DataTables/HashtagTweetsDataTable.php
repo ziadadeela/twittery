@@ -2,22 +2,37 @@
 
 namespace App\DataTables;
 
-use App\Http\Resources\TweetResource;
+use App\Http\Resources\HashtagTweetsResource;
 use App\Tweet;
 use Illuminate\Support\Facades\Auth;
+use Yajra\DataTables\DataTableAbstract;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Services\DataTable;
 
-class TweetsDataTable extends DataTable
+class HashtagTweetsDataTable extends DataTable
 {
+
+    protected $hashtag;
+
+
+    /**
+     * HashtagTweetsDataTable constructor.
+     * @param $hashtag
+     */
+    public function __construct($hashtag)
+    {
+        $this->hashtag = $hashtag;
+    }
+
     /**
      * Build DataTable class.
-     *
+     * @param $query
+     * @return DataTableAbstract
      */
     public function dataTable($query)
     {
         return (new EloquentDataTable($query))->setTransformer(function ($item) {
-            return TweetResource::make($item)->resolve();
+            return HashtagTweetsResource::make($item)->resolve();
         });
     }
 
@@ -28,7 +43,11 @@ class TweetsDataTable extends DataTable
      */
     public function query()
     {
-        $query = Tweet::query()->where('user_id', Auth::id())->with('hashtags');
+        $query = Tweet::query()->select('tweets.*')
+            ->leftJoin('hashtag_tweet', 'tweets.id', 'hashtag_tweet.tweet_id')
+            ->where('user_id', Auth::id())
+            ->where('hashtag_tweet.hashtag_id', $this->hashtag->id)
+            ->distinct();
 
         return $this->applyScopes($query);
     }
@@ -54,10 +73,7 @@ class TweetsDataTable extends DataTable
     protected function getColumns()
     {
         return [
-            'id',
             'text',
-            'user_id',
-            'hashtags',
             'retweet_count',
             'favorite_count',
             'twitter_created_at',

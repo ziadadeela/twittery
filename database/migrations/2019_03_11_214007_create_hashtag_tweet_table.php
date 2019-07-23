@@ -17,7 +17,6 @@ class CreateHashtagTweetTable extends Migration
             $table->bigIncrements('id');
             $table->bigInteger('hashtag_id');
             $table->bigInteger('tweet_id');
-            $table->timestamps();
 
             $table->foreign('hashtag_id')->references('id')
                 ->on('hashtags')->onDelete('cascade')->onUpdate('cascade');
